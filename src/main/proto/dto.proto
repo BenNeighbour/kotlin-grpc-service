@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package com.example;
+
+option java_multiple_files = true;
+option java_package = "com.example";
+
+import "google/protobuf/timestamp.proto";
+import "entity.proto";
+
+message GenreGetManyResponse {
+  repeated GenreDto items = 1;
+}
+
+message GenreCreateRequest {
+  string name = 1;
+  string description = 2;
+  bool is_active = 3;
+}
+
+message GenreGetRequest {
+  string id = 1;
+}
+
+message GenreGetManyRequest {
+  repeated string ids = 1;
+}
+
+message GenreGetResponse {
+  GenreDto item = 1;
+}
+
+message GenreCreateResponse {
+  GenreDto item = 1;
+}
+
+message GenreCreateManyRequest {
+  repeated GenreDto items = 1;
+}
+
+message GenreCreateManyResponse {
+  repeated GenreDto items = 1;
+}

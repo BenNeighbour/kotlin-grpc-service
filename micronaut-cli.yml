@@ -1,0 +1,6 @@
+applicationType: grpc
+defaultPackage: com.example
+testFramework: spock
+sourceLanguage: kotlin
+buildTool: gradle_kotlin
+features: [app-name, data, data-jdbc, discovery-core, flyway, graalvm, gradle, grpc, h2, http-client-test, jdbc-hikari, kotlin, kotlin-application, ksp, logback, micronaut-build, properties, readme, serialization-jackson, shade, spock, tracing-opentelemetry-exporter-otlp]

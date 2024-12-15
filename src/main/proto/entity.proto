@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package com.example;
+
+option java_multiple_files = true;
+option java_package = "com.example";
+
+import "google/protobuf/timestamp.proto";
+
+message GenreDto {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  bool is_active = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}

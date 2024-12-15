@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package com.example;
+
+option java_multiple_files = true;
+option java_package = "com.example";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "dto.proto";
+
+service GenreService {
+  rpc Create (GenreCreateRequest) returns (GenreCreateResponse);
+  rpc Get (GenreGetRequest) returns (GenreGetResponse);
+  rpc GetMany (GenreGetManyRequest) returns (GenreGetManyResponse);
+  rpc CreateMany (GenreCreateManyRequest) returns (GenreCreateManyResponse);
+}
