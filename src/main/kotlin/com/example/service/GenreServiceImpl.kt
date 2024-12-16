@@ -4,23 +4,23 @@ import com.example.GenreCreateManyRequest
 import com.example.GenreCreateManyResponse
 import com.example.GenreCreateRequest
 import com.example.GenreCreateResponse
-import com.example.GenreDto
 import com.example.GenreGetManyRequest
 import com.example.GenreGetManyResponse
 import com.example.GenreGetRequest
 import com.example.GenreGetResponse
+import com.example.GenreListResponse
+import com.example.ListRequest
 import com.example.repository.GenreRepository
 import kotlinx.coroutines.reactive.awaitSingle
 import com.example.converter.GenreCreateRequestConverter.toEntity
 import com.example.converter.GenreDtoConverter.toEntity
 import com.example.converter.GenreDtoConverter.toProto
-import com.example.converter.ProtoConverter.toUUID
+import com.example.shared.ProtoConverter.toPredicate
+import com.example.shared.ProtoConverter.toUUID
+import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactive.asFlow
-import io.micronaut.data.model.Pageable
-import io.micronaut.data.model.Sort
-import io.micronaut.data.model.Page
 
 @Singleton
 class GenreServiceImpl(private val genreRepository: GenreRepository) : GenreService {
@@ -48,9 +48,14 @@ class GenreServiceImpl(private val genreRepository: GenreRepository) : GenreServ
         return GenreGetResponse.newBuilder().setItem(item).build()
     }
 
-    override suspend fun list(): Page<GenreDto> {
-        // TODO - Do sorting + need to improve error handling + add this in a converter
-        return genreRepository.findAll(Pageable.from(1, 5, Sort.of(Sort.Order.asc("description"))))
-            .awaitSingle().toProto()
+    override suspend fun list(request: ListRequest): GenreListResponse {
+//        TODO - Convert request field string from proto -> entity (.toEntity)
+//        TODO - Make pagination parameter work
+        val page = genreRepository.findAll(request.toPredicate(), Pageable.UNPAGED).awaitSingle().toProto()
+
+        // Build and return the response
+        return GenreListResponse.newBuilder()
+            .addAllItems(page.content)
+            .build()
     }
 }

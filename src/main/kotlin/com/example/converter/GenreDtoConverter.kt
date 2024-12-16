@@ -2,7 +2,8 @@ package com.example.converter
 
 import com.example.model.Genre
 import com.example.GenreDto
-import com.example.converter.ProtoConverter.toProto
+import com.example.shared.ProtoConverter.toProto
+import com.example.shared.DtoConverter
 
 object GenreDtoConverter : DtoConverter<Genre, GenreDto> {
     override fun GenreDto.toEntity(): Genre {
@@ -19,6 +20,7 @@ object GenreDtoConverter : DtoConverter<Genre, GenreDto> {
             .setId(this.id.toProto())
             .setName(this.name)
             .setDescription(this.description)
+            .setIsActive(this.isActive)
             .setCreatedAt(this.createdAt.toProto())
             .setUpdatedAt(this.updatedAt.toProto())
             .build()

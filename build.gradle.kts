@@ -27,6 +27,7 @@ dependencies {
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
     implementation("io.micronaut.serde:micronaut-serde-jackson")
     implementation("io.opentelemetry:opentelemetry-exporter-otlp")
+    implementation("io.micronaut.data:micronaut-data-hibernate-reactive")
     implementation("javax.annotation:javax.annotation-api")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")

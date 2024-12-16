@@ -7,7 +7,6 @@ import jakarta.inject.Singleton
 
 @Singleton
 class GenreTransport(private val genreService: GenreService) : GenreServiceGrpcKt.GenreServiceCoroutineImplBase() {
-
     override suspend fun create(request: GenreCreateRequest): GenreCreateResponse {
         return genreService.createGenre(request)
     }
@@ -24,5 +23,7 @@ class GenreTransport(private val genreService: GenreService) : GenreServiceGrpcK
         return genreService.getGenreByIds(request)
     }
 
-
+    override suspend fun list(request: ListRequest): GenreListResponse {
+        return genreService.list(request)
+    }
 }

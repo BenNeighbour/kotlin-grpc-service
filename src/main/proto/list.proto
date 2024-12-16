@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package com.example;
+
+option java_multiple_files = true;
+option java_package = "com.example";
+
+// Generic request for listing items
+message ListRequest {
+  int32 page = 1;
+  int32 per_page = 2;
+  repeated SortOrder sort = 3;
+  repeated Filter filters = 4;
+}
+
+// Generic response for listing items
+message ListResponse {
+  int32 total_items = 1;
+  int32 total_pages = 2;
+  int32 current_page = 3;
+  int32 per_page = 4;
+}
+
+// Sorting order
+message SortOrder {
+  string field = 1;
+  Direction direction = 2;
+
+  enum Direction {
+    ASC = 0;
+    DESC = 1;
+  }
+}
+
+// Filtering criteria
+message Filter {
+  string field = 1;
+  Operator operator = 2;
+  string value = 3;
+
+  enum Operator {
+    EQUALS = 0;
+    NOT_EQUALS = 1;
+    GREATER_THAN = 2;
+    LESS_THAN = 3;
+    GREATER_THAN_OR_EQUALS = 4;
+    LESS_THAN_OR_EQUALS = 5;
+    CONTAINS = 6;
+    STARTS_WITH = 7;
+    ENDS_WITH = 8;
+    IN = 9;
+    NOT_IN = 10;
+  }
+}

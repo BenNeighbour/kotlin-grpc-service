@@ -1,8 +1,7 @@
-package com.example.converter
+package com.example.shared
 
 import io.micronaut.data.model.Page
 
-// A DTO can be converted into basically anything
 interface DtoConverter<E, D> {
     fun D.toEntity(): E
     fun E.toProto(): D
@@ -11,7 +10,6 @@ interface DtoConverter<E, D> {
     fun Page<E>.toProto(): Page<D> = this.map { it.toProto() }
 }
 
-// A request will only ever be converted into an entity (or partial entity)
 interface RequestConverter<E, D> {
     fun D.toEntity(): E
 }
