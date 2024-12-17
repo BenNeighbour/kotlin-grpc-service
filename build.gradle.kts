@@ -36,10 +36,6 @@ dependencies {
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("com.google.protobuf:protobuf-kotlin")
     runtimeOnly("org.postgresql:r2dbc-postgresql")
-
-//    TODO MAYBE
-    implementation("com.google.protobuf:protobuf-java-util:3.25.3")
-    implementation("io.github.mscheong01:krotoDC-core:1.1.1")
 }
 
 
@@ -72,16 +68,12 @@ protobuf {
         id("grpckt") {
             artifact = "io.grpc:protoc-gen-grpc-kotlin:1.4.1:jdk8@jar"
         }
-        id("krotoDC") {
-            artifact = "io.github.mscheong01:protoc-gen-krotoDC:1.1.1:jdk8@jar"
-        }
     }
     generateProtoTasks {
         ofSourceSet("main").forEach {
             it.plugins {
                 id("grpc")
                 id("grpckt")
-                id("krotoDC")
             }
         }
     }
