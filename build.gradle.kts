@@ -20,12 +20,9 @@ repositories {
 
 dependencies {
     ksp("io.micronaut.data:micronaut-data-processor")
-    ksp("io.micronaut.serde:micronaut-serde-processor")
-    implementation("io.micronaut:micronaut-discovery-core")
     implementation("io.micronaut.data:micronaut-data-r2dbc")
     implementation("io.micronaut.grpc:micronaut-grpc-runtime")
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
-    implementation("io.micronaut.serde:micronaut-serde-jackson")
     implementation("io.opentelemetry:opentelemetry-exporter-otlp")
     implementation("io.micronaut.data:micronaut-data-hibernate-reactive")
     implementation("javax.annotation:javax.annotation-api")
@@ -33,20 +30,26 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("io.grpc:grpc-services")
     implementation("io.grpc:grpc-kotlin-stub")
-
+    implementation("io.micronaut.tracing:micronaut-tracing-opentelemetry-annotation")
+    implementation("io.micronaut.tracing:micronaut-tracing-opentelemetry-grpc")
+    implementation("io.opentelemetry:opentelemetry-exporter-otlp")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("com.google.protobuf:protobuf-kotlin")
     runtimeOnly("org.postgresql:r2dbc-postgresql")
+
+//    TODO MAYBE
+    implementation("com.google.protobuf:protobuf-java-util:3.25.3")
+    implementation("io.github.mscheong01:krotoDC-core:1.1.1")
 }
 
 
 application {
     mainClass = "com.example.ApplicationKt"
 }
+
 java {
     sourceCompatibility = JavaVersion.toVersion("21")
 }
-
 
 sourceSets {
     main {
@@ -69,20 +72,23 @@ protobuf {
         id("grpckt") {
             artifact = "io.grpc:protoc-gen-grpc-kotlin:1.4.1:jdk8@jar"
         }
+        id("krotoDC") {
+            artifact = "io.github.mscheong01:protoc-gen-krotoDC:1.1.1:jdk8@jar"
+        }
     }
     generateProtoTasks {
         ofSourceSet("main").forEach {
             it.plugins {
                 id("grpc")
                 id("grpckt")
+                id("krotoDC")
             }
         }
     }
 }
 
 micronaut {
-    testRuntime("spock2")
-    runtime("netty")
+    testRuntime("junit5")
 
     processing {
         incremental(true)
@@ -90,7 +96,7 @@ micronaut {
         aot {
             // Please review carefully the optimizations enabled below
             // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
-            optimizeServiceLoading = false
+            optimizeServiceLoading = true
             convertYamlToJava = false
             precomputeOperations = true
             cacheEnvironment = true
