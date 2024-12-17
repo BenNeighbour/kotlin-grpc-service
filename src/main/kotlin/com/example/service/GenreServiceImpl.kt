@@ -10,14 +10,15 @@ import com.example.GenreGetRequest
 import com.example.GenreGetResponse
 import com.example.GenreListResponse
 import com.example.ListRequest
+import com.example.ListResponse
 import com.example.repository.GenreRepository
 import kotlinx.coroutines.reactive.awaitSingle
 import com.example.converter.GenreCreateRequestConverter.toEntity
 import com.example.converter.GenreDtoConverter.toEntity
 import com.example.converter.GenreDtoConverter.toProto
+import com.example.shared.ProtoConverter.toPageable
 import com.example.shared.ProtoConverter.toPredicate
 import com.example.shared.ProtoConverter.toUUID
-import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.reactive.asFlow
@@ -50,12 +51,17 @@ class GenreServiceImpl(private val genreRepository: GenreRepository) : GenreServ
 
     override suspend fun list(request: ListRequest): GenreListResponse {
 //        TODO - Convert request field string from proto -> entity (.toEntity)
-//        TODO - Make pagination parameter work
-        val page = genreRepository.findAll(request.toPredicate(), Pageable.UNPAGED).awaitSingle().toProto()
 
-        // Build and return the response
+        val page = genreRepository.findAll(request.toPredicate(), request.toPageable()).awaitSingle()
+
         return GenreListResponse.newBuilder()
-            .addAllItems(page.content)
+            .setPagination(ListResponse.newBuilder()
+                .setTotalItems(page.totalSize.toInt())
+                .setTotalPages(page.totalPages)
+                .setCurrentPage(request.page)
+                .setPerPage(request.perPage)
+                .build())
+            .addAllItems(page.content.toProto())
             .build()
     }
 }
